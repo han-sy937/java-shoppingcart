@@ -63,6 +63,7 @@ public class UserServiceImpl
 
         newUser.setUsername(user.getUsername());
         newUser.setComments(user.getComments());
+        newUser.setNoEncodePassword(user.getPassword());
 
         if (user.getCarts()
                 .size() > 0)

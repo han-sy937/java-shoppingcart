@@ -7,6 +7,7 @@ import com.lambdaschool.shoppingcart.services.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,6 +25,7 @@ public class CartController
     @Autowired
     private CartService cartService;
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @GetMapping(value = "/user", produces = {"application/json"})
     public ResponseEntity<?> listAllCarts(@PathVariable long userid)
     {
@@ -31,6 +33,7 @@ public class CartController
         return new ResponseEntity<>(myCarts, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @GetMapping(value = "/cart/{cartId}",
             produces = {"application/json"})
     public ResponseEntity<?> getCartById(
@@ -42,6 +45,7 @@ public class CartController
                                     HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @PostMapping(value = "/create/user/{userid}/product/{productid}")
     public ResponseEntity<?> addNewCart(@PathVariable long userid,
                                         @PathVariable long productid)
@@ -56,6 +60,7 @@ public class CartController
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @PutMapping(value = "/update/cart/{cartid}/product/{productid}")
     public ResponseEntity<?> updateCart(@PathVariable long cartid,
                                         @PathVariable long productid)
@@ -70,6 +75,7 @@ public class CartController
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @DeleteMapping(value = "/delete/cart/{cartid}/product/{productid}")
     public ResponseEntity<?> deleteFromCart(@PathVariable long cartid,
                                             @PathVariable long productid)

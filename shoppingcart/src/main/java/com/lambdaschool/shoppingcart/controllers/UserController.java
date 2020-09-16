@@ -7,6 +7,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -35,6 +36,7 @@ public class  UserController
         return new ResponseEntity<>(myUsers, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @GetMapping(value = "/user/{userId}",
             produces = {"application/json"})
     public ResponseEntity<?> getUserById(
@@ -45,7 +47,7 @@ public class  UserController
         return new ResponseEntity<>(u,
                                     HttpStatus.OK);
     }
-
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @PostMapping(value = "/user", consumes = {"application/json"})
     public ResponseEntity<?> addUser(@Valid @RequestBody User newuser)
     {
@@ -65,6 +67,7 @@ public class  UserController
                                     HttpStatus.CREATED);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @DeleteMapping(value = "/user/{userId}")
     public ResponseEntity<?> deleteUserById(
             @PathVariable
@@ -72,5 +75,13 @@ public class  UserController
     {
         userService.delete(userId);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    // http://localhost:2019/users/myinfo
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping(value = "/myinfo", produces = {"application/json"})
+    public ResponseEntity<?> findCurrentUser(Authentication auth) {
+        User currentUser = userService.findUserById(userService.findByName(auth.getName()).getUserid());
+        return new ResponseEntity<>(currentUser, HttpStatus.OK);
     }
 }

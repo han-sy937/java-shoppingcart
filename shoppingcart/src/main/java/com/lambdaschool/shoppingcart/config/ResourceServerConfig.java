@@ -25,9 +25,12 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
         http.logout().disable();
 
         http.authorizeRequests()
-                .antMatchers("/", "/h-console/**").permitAll()
+                .antMatchers("/", "/h-console/**", "/login").permitAll()
                 .antMatchers("/user/**").authenticated()
-                .antMatchers("/roles/**").hasAnyRole("ADMIN", "EDIT")
+//                .antMatchers("/roles/**").hasAnyRole("ADMIN")
+                .antMatchers("/products/**").authenticated()
+                .antMatchers("/carts/user").authenticated()
+                .antMatchers("/users/myinfo").authenticated()
         .and()
         .exceptionHandling()
         .accessDeniedHandler(new OAuth2AccessDeniedHandler());

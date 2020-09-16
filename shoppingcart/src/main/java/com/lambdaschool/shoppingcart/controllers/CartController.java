@@ -25,6 +25,7 @@ public class CartController
     @Autowired
     private CartService cartService;
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @GetMapping(value = "/user", produces = {"application/json"})
     public ResponseEntity<?> listAllCarts(@PathVariable long userid)
     {
@@ -44,6 +45,7 @@ public class CartController
                                     HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @PostMapping(value = "/create/user/{userid}/product/{productid}")
     public ResponseEntity<?> addNewCart(@PathVariable long userid,
                                         @PathVariable long productid)
@@ -58,6 +60,7 @@ public class CartController
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @PutMapping(value = "/update/cart/{cartid}/product/{productid}")
     public ResponseEntity<?> updateCart(@PathVariable long cartid,
                                         @PathVariable long productid)
@@ -72,6 +75,7 @@ public class CartController
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @DeleteMapping(value = "/delete/cart/{cartid}/product/{productid}")
     public ResponseEntity<?> deleteFromCart(@PathVariable long cartid,
                                             @PathVariable long productid)

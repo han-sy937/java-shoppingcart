@@ -28,7 +28,7 @@ public class  UserController
     @Autowired
     private UserService userService;
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    @PreAuthorize("isAuthenticated()")
     @GetMapping(value = "/users", produces = {"application/json"})
     public ResponseEntity<?> listAllUsers()
     {
@@ -36,7 +36,7 @@ public class  UserController
         return new ResponseEntity<>(myUsers, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    @PreAuthorize("isAuthenticated()")
     @GetMapping(value = "/user/{userId}",
             produces = {"application/json"})
     public ResponseEntity<?> getUserById(
@@ -47,7 +47,7 @@ public class  UserController
         return new ResponseEntity<>(u,
                                     HttpStatus.OK);
     }
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    @PreAuthorize("isAuthenticated()")
     @PostMapping(value = "/user", consumes = {"application/json"})
     public ResponseEntity<?> addUser(@Valid @RequestBody User newuser)
     {
@@ -67,7 +67,7 @@ public class  UserController
                                     HttpStatus.CREATED);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    @PreAuthorize("isAuthenticated()")
     @DeleteMapping(value = "/user/{userId}")
     public ResponseEntity<?> deleteUserById(
             @PathVariable
